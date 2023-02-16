@@ -103,8 +103,8 @@ let seguirComprando = () =>{
     let totalPagar = precioTotal();
     
     alert(`Su orden es:
-    ${listaProductosComprados}
-    Su importe total a pagar es: ${totalPagar}`)
+${listaProductosComprados}
+Su importe total a pagar es: $/${totalPagar}`)
 
     alert('Gracias por su compra, y recuerde inicie su dia con un buen Café...')
 
