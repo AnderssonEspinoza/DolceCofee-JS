@@ -117,7 +117,9 @@
 
 // 
 
-// import cartShopping from "./cart-shopping";
+
+
+
 
 const btnCart = document.querySelector('.container-cart-icon')
 const containerCartProducts = document.querySelector('.container-cart-products')
@@ -142,50 +144,13 @@ const countProducts = document.querySelector('#contador-productos')
 const cartEmpty = document.querySelector('.cart-empty')
 const cartTotal = document.querySelector('.cart-total')
 
-
-productsList.addEventListener('click', e => {
-    if (e.target.classList.contains('btn-add-cart')){
-        
-        const product = e.target.parentElement;
-        const infoProduct = {
-            quantity: 1,
-            title: product.querySelector('p').textContent,
-            price: product.querySelector('h5').textContent            
-        };
-        
-        const exist = allProduct.some(product => product.title === infoProduct.title);
-        if (exist){
-            const products = allProduct.map(product => {
-                if(product.title === infoProduct.title){
-                    product.quantity++;
-                    return product;
-                } else{
-                    return product;
-                }
-            })
-            allProduct = [...products];
-        }else{
-            allProduct = [...allProduct, infoProduct];
-        }
-        // console.log('Productos guardados en localStorage:', allProduct);
-        showHTML();
-        localStorage.setItem('products-in-cart', JSON.stringify(allProduct));
+document.addEventListener('DOMContentLoaded', () => {
+    const savedProducts = localStorage.getItem('products-in-cart');
+    if (savedProducts) {
+      allProduct = JSON.parse(savedProducts);
+      showHTML();
     }
-});
-
-rowProduct.addEventListener('click', e => {
-    
-    if (e.target.classList.contains('icon-close')){
-        const product = e.target.parentElement;
-        console.log(product)
-        const title = product.querySelector('p').textContent;
-        console.log(title)
-
-        allProduct = allProduct.filter(product => product.title !== title);
-        console.log(allProduct);
-        showHTML();
-    }
-})
+  });
 
 // Funcion para mostrar en el html
 const showHTML = () =>{
@@ -194,12 +159,12 @@ const showHTML = () =>{
         cartEmpty.style.display= 'block';
         cartEmpty.classList.remove('hidden');
         rowProduct.classList.add('hidden');
-        cartTotal.classList.add('hidden');
+        valorTotal.classList.add('hidden');
     } else {
         cartEmpty.style.display= 'none';
         cartEmpty.classList.add('hidden');
         rowProduct.classList.remove('hidden');
-        cartTotal.classList.remove('hidden');
+        valorTotal.classList.remove('hidden');
     }
 
     // clear html
@@ -246,24 +211,60 @@ const showHTML = () =>{
 
 
 
+//Verificamos si en otra seccion de la pagina existe el una lista de productos
+if(productsList !== null){
 
-// Recuperacion de datos al refrescar (localStorage)
-document.addEventListener('DOMContentLoaded', () => {
-    const savedProducts = localStorage.getItem('products-in-cart');
-    if (savedProducts) {
-      allProduct = JSON.parse(savedProducts);
-      showHTML();
+    productsList.addEventListener('click', e => {
+        if (e.target.classList.contains('btn-add-cart')){
+            
+            const product = e.target.parentElement;
+            const infoProduct = {
+                quantity: 1,
+                title: product.querySelector('p').textContent,
+                price: product.querySelector('h5').textContent            
+            };
+            
+            const exist = allProduct.some(product => product.title === infoProduct.title);
+            if (exist){
+            const products = allProduct.map(product => {
+                if(product.title === infoProduct.title){
+                    product.quantity++;
+                    return product;
+                } else{
+                    return product;
+                }
+            })
+            allProduct = [...products];
+        }else{
+            allProduct = [...allProduct, infoProduct];
+        }
+        // console.log('Productos guardados en localStorage:', allProduct);
+        showHTML();
+        localStorage.setItem('products-in-cart', JSON.stringify(allProduct));
+        // sessionStorage.setItem('products-in-cart', JSON.stringify(allProduct));
     }
-  });
-  
+});
+
+}
+
+document.addEventListener('click', e => {
+    
+    if (e.target.classList.contains('icon-close')){
+        const product = e.target.parentElement;
+        console.log(product)
+        const title = product.querySelector('p').textContent;
+        console.log(title)
+
+        allProduct = allProduct.filter(product => product.title !== title);
+        console.log(allProduct);
+        showHTML();
+        localStorage.setItem('products-in-cart', JSON.stringify(allProduct));
+    }
+})
+
 
   window.addEventListener('beforeunload', () => {
     localStorage.setItem('products-in-cart', JSON.stringify(allProduct));
   });
 
-// Guardar datos en sessionStorage
-sessionStorage.setItem('products-in-cart', JSON.stringify(allProduct));
-
-// Recuperar datos de sessionStorage
-const savedProducts = sessionStorage.getItem('products-in-cart');
 
