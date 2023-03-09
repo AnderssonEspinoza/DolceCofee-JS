@@ -120,9 +120,10 @@
 
 
 
-
-const btnCart = document.querySelector('.container-cart-icon')
-const containerCartProducts = document.querySelector('.container-cart-products')
+const containerCartEmpy = document.querySelector('.container-cart-empty');
+const btnCart = document.querySelector('.container-cart-icon');
+const containerCartProducts = document.querySelector('.container-cart-products');
+const containerBtnCart = document.querySelector('.container-btn-cart');
 
 btnCart.addEventListener('click', () => {
     containerCartProducts.classList.toggle('hidden-cart')
@@ -156,12 +157,19 @@ document.addEventListener('DOMContentLoaded', () => {
 const showHTML = () =>{
 
     if(!allProduct.length){
-        cartEmpty.style.display= 'block';
+        containerCartEmpy.style.display = 'flex';
+        containerBtnCart.style.display='none'
+        
+        // cartTotal.style.display= 'block'
+        // cartEmpty.style.display= 'block';
         cartEmpty.classList.remove('hidden');
         rowProduct.classList.add('hidden');
         valorTotal.classList.add('hidden');
     } else {
-        cartEmpty.style.display= 'none';
+        containerCartEmpy.style.display = 'none'
+        containerBtnCart.style.display='flex'
+        // cartTotal.style.display='none'
+        // cartEmpty.style.display= 'none';
         cartEmpty.classList.add('hidden');
         rowProduct.classList.remove('hidden');
         valorTotal.classList.remove('hidden');
@@ -181,6 +189,7 @@ const showHTML = () =>{
 			<span class="cantidad-producto-carrito">${product.quantity}</span>
 			<p class="titulo-producto-carrito">${product.title}</p>
 			<span class="precio-producto-carrito">${product.price}</span>
+            <img class= 'img-cart-products' src='${product.img}' style='width:40px; heigth:40px'></img>
 		</div>
 		<svg
 		    xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +230,8 @@ if(productsList !== null){
             const infoProduct = {
                 quantity: 1,
                 title: product.querySelector('p').textContent,
-                price: product.querySelector('h5').textContent            
+                price: product.querySelector('h5').textContent,
+                img: product.querySelector('img').src         
             };
             
             const exist = allProduct.some(product => product.title === infoProduct.title);
